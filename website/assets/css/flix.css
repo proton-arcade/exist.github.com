@@ -28,7 +28,7 @@ body {
 }
 
 body.flix {
-  font-family: "Trebuchet MS", Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
   margin: 0;
   padding: 0;
@@ -457,7 +457,7 @@ body.flix .icon {
   margin-top: 56px;
   margin-bottom: 48px;
   font-size: 140%;
-  font-family: "Benton Sans", "Helvetica Neue", helvetica, arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   line-height: 160%;
   text-align: center;
   padding: 0 24px;
@@ -1228,7 +1228,7 @@ body.folder-page .toast.visible {
 
 body.player-body,
 body.folder-page {
-  font-family: "Trebuchet MS", Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   background: var(--flix-bg);
   color: #fff;
   margin: 0;
