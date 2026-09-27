@@ -1638,6 +1638,10 @@ body.folder-page {
   background: #252525;
 }
 .row-posters .game-card span { font-weight: 700; }
+.flix-row > h2 { display: flex; align-items: center; gap: 9px; font-size: 1.1rem; margin: 22px 12px 9px; }
+.collection-icon { width: 22px; height: 22px; object-fit: contain; flex: 0 0 auto; }
+[data-icon] { display: inline-flex; align-items: center; justify-content: center; }
+[data-icon] svg { display: block; width: 1.2em; height: 1.2em; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; fill: none; }
 .sections-editor { padding: 12px 18px; display: grid; gap: 12px; }
 .section-editor-field { display: grid; gap: 8px; font-weight: 700; }
 .section-editor-field select { padding: 10px; background: #171717; color: white; border: 1px solid #555; border-radius: 4px; font: inherit; }

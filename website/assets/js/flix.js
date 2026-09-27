@@ -31,11 +31,19 @@
       });
     });
     if (!groups.size && catalog.length) groups.set('Games', catalog);
-    function appendRow(label, items) {
+    function appendRow(label, items, iconPath = '') {
       const section = document.createElement('section');
       section.className = 'flix-row';
       const heading = document.createElement('h2');
-      heading.textContent = label;
+      if (iconPath) {
+        const icon = document.createElement('img');
+        icon.className = 'collection-icon';
+        icon.src = `website/${iconPath}`;
+        icon.alt = '';
+        icon.onerror = () => { icon.src = 'website/assets/images/folder.svg'; };
+        heading.append(icon);
+      }
+      heading.append(document.createTextNode(label));
       const cards = document.createElement('div');
       cards.className = 'row-posters';
       items.forEach((game) => cards.append(makeCard(game)));
@@ -46,11 +54,11 @@
     (window.EXST_FOLDERS || []).forEach((folder) => {
       if (settings[`collection:${folder.id}`] === false) return;
       const collectionGames = folder.games.map((id) => catalog.find((game) => game.id === id)).filter(Boolean);
-      if (collectionGames.length) appendRow(folder.title, collectionGames);
+      if (collectionGames.length) appendRow(folder.title, collectionGames, folder.icon || 'assets/images/folder.svg');
     });
   }
 
-  const hero = catalog.find((game) => game.id === settings.spotlight) || catalog.find((game) => game.hero === 'true') || catalog[0];
+  const hero = catalog.find((game) => game.hero === 'true') || catalog[0];
   if (hero) {
     document.getElementById('heroTitle').textContent = hero.title;
     document.getElementById('heroOverview').textContent = hero.description || '';
@@ -63,22 +71,12 @@
   const count = document.getElementById('searchCount');
   if (count) count.textContent = `${catalog.length} games`;
 
-  // Main-page editor: select the spotlight game and toggle tag-based home rows.
+  // The spotlight is controlled only by the hero=true flag in data/games.js.
+  // This editor controls visibility of tag-based rows and collections only.
   document.getElementById('editSections')?.addEventListener('click', () => {
     const dialog = document.getElementById('sectionsDialog');
     const content = document.getElementById('sectionsEditor');
     content.replaceChildren();
-    const spotlightLabel = document.createElement('label');
-    spotlightLabel.className = 'section-editor-field';
-    spotlightLabel.textContent = 'Spotlight game';
-    const spotlightSelect = document.createElement('select');
-    spotlightSelect.id = 'spotlightChoice';
-    catalog.forEach((game) => {
-      const option = document.createElement('option'); option.value = game.id; option.textContent = game.title;
-      option.selected = game.id === (settings.spotlight || hero?.id); spotlightSelect.append(option);
-    });
-    spotlightLabel.append(spotlightSelect);
-    content.append(spotlightLabel);
     const heading = document.createElement('h3'); heading.textContent = 'Home page sections'; content.append(heading);
     const tags = [...new Set(catalog.flatMap((game) => (game.tags || 'Games').split(',').map((tag) => tag.trim()).filter(Boolean)))];
     tags.forEach((tag) => {
@@ -98,7 +96,7 @@
   });
   document.getElementById('saveSections')?.addEventListener('click', () => {
     const dialog = document.getElementById('sectionsDialog');
-    const next = { spotlight: document.getElementById('spotlightChoice')?.value };
+    const next = {};
     document.querySelectorAll('#sectionsEditor [data-section]').forEach((checkbox) => { next[checkbox.dataset.section] = checkbox.checked; });
     document.querySelectorAll('#sectionsEditor [data-collection]').forEach((checkbox) => { next[`collection:${checkbox.dataset.collection}`] = checkbox.checked; });
     settings = next;

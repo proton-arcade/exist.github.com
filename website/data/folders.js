@@ -6,7 +6,7 @@ available=true
 id=collection-id
 title=Collection title
 description=Optional description
-icon=assets/images/default-game.svg
+icon=assets/images/folder.svg
 games=game-id,another-game-id
 
 The games value uses IDs from data/games.js, not file paths.
@@ -17,6 +17,6 @@ available=true
 id=Ealgercraft
 title=Ealgercraft
 description=All Ealgercraft versions
-icon=assets/images/default-game.svg
+icon=assets/images/folder.svg
 games=Ampler-Launcher
 `;
