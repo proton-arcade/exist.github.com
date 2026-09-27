@@ -12,6 +12,7 @@
   };
   document.querySelectorAll('[data-icon]').forEach((element) => {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    element.classList.add('icon');
     svg.setAttribute('viewBox', '0 0 24 24');
     svg.setAttribute('aria-hidden', 'true');
     svg.setAttribute('focusable', 'false');

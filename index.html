@@ -68,20 +68,11 @@
             <p class="hero-overview" id="heroOverview"></p>
             <div class="categories" id="heroCategories"></div>
             <div class="options">
-              <button class="flat-btn" id="heroFavorite" data-favorite="">
-                <i data-icon="add"></i><span>My List</span>
-              </button>
               <button class="play-btn" id="heroPlay" data-play="">
                 <i data-icon="play"></i>Play
               </button>
               <button class="flat-btn" id="heroDetails" data-details="">
                 <i data-icon="info"></i><span>Details</span>
-              </button>
-              <button class="flat-btn" id="editSections" type="button">
-                <i data-icon="sort"></i><span>Edit sections</span>
-              </button>
-              <button class="flat-btn" id="heroHowTo" hidden>
-                <i data-icon="add"></i><span>Add a game</span>
               </button>
             </div>
             <div class="hero-dots" id="heroDots" role="group" aria-label="Featured games"></div>
@@ -157,6 +148,7 @@
               <option value="new">Open game in a new tab</option>
             </select>
           </div>
+          <button class="primary-button" id="editSections" type="button">Edit home sections</button>
         </div>
       </section>
     </main>
@@ -191,7 +183,6 @@
           <p id="detailsMeta" class="sub"></p>
           <div class="tag-row" id="detailsTags"></div>
           <p id="detailsOverview"></p>
-          <h2><span id="detailsVote">7.5</span></h2>
           <div class="details-actions">
             <a class="ghost" id="detailsDirect" target="_blank" rel="noopener"
               ><i data-icon="arrow-up-right"></i>Direct link</a
@@ -200,12 +191,8 @@
         </div>
       </main>
       <footer>
-        <button id="detailsFooterFav">
-        </button>
         <button class="play-cta" id="detailsPlay" data-play="">
           <i data-icon="play"></i>Play
-        </button>
-        <button id="detailsShare"
         </button>
       </footer>
     </div>

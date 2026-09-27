@@ -9,7 +9,8 @@
   function makeCard(game) {
     const link = document.createElement('a');
     link.className = 'game-card';
-    link.href = `website/game.html?id=${encodeURIComponent(game.id)}`;
+    link.href = '#detailsPage';
+    link.dataset.details = game.id;
     const image = document.createElement('img');
     image.src = `website/${game.icon || 'assets/images/default-game.svg'}`;
     image.alt = '';
@@ -31,31 +32,23 @@
       });
     });
     if (!groups.size && catalog.length) groups.set('Games', catalog);
-    function appendRow(label, items, iconPath = '') {
+    function appendRow(label, items) {
       const section = document.createElement('section');
       section.className = 'flix-row';
       const heading = document.createElement('h2');
-      if (iconPath) {
-        const icon = document.createElement('img');
-        icon.className = 'collection-icon';
-        icon.src = `website/${iconPath}`;
-        icon.alt = '';
-        icon.onerror = () => { icon.src = 'website/assets/images/folder.svg'; };
-        heading.append(icon);
-      }
-      heading.append(document.createTextNode(label));
+      heading.textContent = label;
       const cards = document.createElement('div');
       cards.className = 'row-posters';
       items.forEach((game) => cards.append(makeCard(game)));
       section.append(heading, cards);
       rows.append(section);
     }
-    groups.forEach((items, label) => appendRow(label, items));
     (window.EXST_FOLDERS || []).forEach((folder) => {
       if (settings[`collection:${folder.id}`] === false) return;
       const collectionGames = folder.games.map((id) => catalog.find((game) => game.id === id)).filter(Boolean);
-      if (collectionGames.length) appendRow(folder.title, collectionGames, folder.icon || 'assets/images/folder.svg');
+      if (collectionGames.length) appendRow(folder.title, collectionGames);
     });
+    groups.forEach((items, label) => appendRow(label, items));
   }
 
   const hero = catalog.find((game) => game.hero === 'true') || catalog[0];
@@ -64,6 +57,7 @@
     document.getElementById('heroOverview').textContent = hero.description || '';
     document.getElementById('heroKicker').textContent = hero.version || 'Featured game';
     document.getElementById('heroPlay').dataset.play = hero.id;
+    document.getElementById('heroDetails').dataset.details = hero.id;
     document.getElementById('heroCover').style.backgroundImage = `linear-gradient(90deg,#111,transparent),url("website/${hero.icon || 'assets/images/default-game.svg'}")`;
   }
   renderSections();
@@ -114,7 +108,40 @@
     const query = event.target.value.toLowerCase();
     grid.replaceChildren(...catalog.filter((game) => game.title.toLowerCase().includes(query)).map(makeCard));
   });
+  function showDetails(game) {
+    if (!game) return;
+    document.getElementById('detailsHeadTitle').textContent = game.title;
+    document.getElementById('detailsTitle').textContent = game.title;
+    document.getElementById('detailsMeta').textContent = game.version || '';
+    document.getElementById('detailsOverview').textContent = game.description || 'No description available.';
+    const tags = document.getElementById('detailsTags');
+    tags.replaceChildren(...(game.tags || '').split(',').map((tag) => tag.trim()).filter(Boolean).map((tag) => {
+      const chip = document.createElement('span'); chip.textContent = tag; return chip;
+    }));
+    document.getElementById('detailsCover').style.backgroundImage = `linear-gradient(to bottom, transparent 45%, #101010 100%), url("website/${game.icon || 'assets/images/default-game.svg'}")`;
+    document.getElementById('detailsDirect').href = `website/${game.path}`;
+    document.getElementById('detailsPlay').dataset.play = game.id;
+    const panel = document.getElementById('detailsPage');
+    panel.hidden = false;
+    requestAnimationFrame(() => panel.classList.add('open'));
+    document.body.classList.add('noscroll');
+  }
+  function closeDetails() {
+    const panel = document.getElementById('detailsPage');
+    panel.classList.remove('open');
+    document.body.classList.remove('noscroll');
+    window.setTimeout(() => { panel.hidden = true; }, 220);
+  }
+  document.getElementById('detailsClose')?.addEventListener('click', closeDetails);
+  document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && !document.getElementById('detailsPage').hidden) closeDetails(); });
+
   document.addEventListener('click', (event) => {
+    const detailTarget = event.target.closest('[data-details]');
+    if (detailTarget) {
+      event.preventDefault();
+      showDetails(catalog.find((game) => game.id === detailTarget.dataset.details));
+      return;
+    }
     const button = event.target.closest('[data-play]'); if (!button) return;
     const game = catalog.find((item) => item.id === button.dataset.play) || hero; if (!game) return;
     const mode = localStorage.getItem('openMode') || 'page';
