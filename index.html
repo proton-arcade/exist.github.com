@@ -77,6 +77,9 @@
               <button class="flat-btn" id="heroDetails" data-details="">
                 <i data-icon="info"></i><span>Details</span>
               </button>
+              <button class="flat-btn" id="editSections" type="button">
+                <i data-icon="sort"></i><span>Edit sections</span>
+              </button>
               <button class="flat-btn" id="heroHowTo" hidden>
                 <i data-icon="add"></i><span>Add a game</span>
               </button>
@@ -217,6 +220,16 @@
       <div id="dialogContent"></div>
     </dialog>
 
+    <dialog id="sectionsDialog" class="arcade-dialog spotlight-dialog" aria-labelledby="sectionsHeading">
+      <div class="dialog-header">
+        <h2 id="sectionsHeading">Edit home page sections</h2>
+        <button class="icon-button" id="closeSections" type="button" aria-label="Close editor">×</button>
+      </div>
+      <div id="sectionsEditor" class="sections-editor"></div>
+      <div class="spot-actions">
+        <button class="primary-button" id="saveSections" type="button">Save changes</button>
+      </div>
+    </dialog>
     <div class="toast" id="toast" role="status"></div>
     <script src="website/data/games.js"></script>
     <script src="website/assets/js/icons.js"></script>

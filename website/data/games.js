@@ -25,4 +25,16 @@ tags=Survival, simulator, adventure
 featured=true
 hero=true
 
+# TEST GAME: remove this entry block and website/games/test-game/ to remove the demo.
+[game]
+id=arcade-test-game
+title=Arcade Test Game
+path=games/test-game/index.html
+icon=assets/images/default-game.svg
+version=Demo
+description=A tiny removable sample game for testing the player.
+tags=Test, Demo
+featured=false
+hero=false
+
 `;
