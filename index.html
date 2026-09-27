@@ -35,10 +35,6 @@
       href="website/assets/images/favicon.svg"
       type="image/svg+xml"
     />
-    <link
-      rel="apple-touch-icon"
-      href="website/assets/images/apple-touch-icon.png"
-    />
     <link rel="stylesheet" href="website/assets/css/flix.css" />
   </head>
   <body class="flix">
@@ -66,25 +62,17 @@
           <div class="cover" id="heroCover"></div>
           <div class="hero-shade"></div>
           <div class="hero-content">
-            <div class="hero-kicker" id="heroKicker">sporlight</div>
+            <div class="hero-kicker" id="heroKicker">Spotlight</div>
             <h1 class="hero-title" id="heroTitle">Loading…</h1>
             <div class="hero-meta" id="heroMeta"></div>
             <p class="hero-overview" id="heroOverview"></p>
             <div class="categories" id="heroCategories"></div>
             <div class="options">
-              <button class="flat-btn" id="heroFavorite" data-favorite="">
-                <i data-icon="add"></i><span>My List</span>
-              </button>
               <button class="play-btn" id="heroPlay" data-play="">
                 <i data-icon="play"></i>Play
               </button>
               <button class="flat-btn" id="heroDetails" data-details="">
                 <i data-icon="info"></i><span>Details</span>
-              </button>
-              <butto id="heroEdit">
-              </button>
-              <button class="flat-btn" id="heroHowTo" hidden>
-                <i data-icon="add"></i><span>Add a game</span>
               </button>
             </div>
             <div class="hero-dots" id="heroDots" role="group" aria-label="Featured games"></div>
@@ -152,26 +140,15 @@
         <div class="flix-subpage">
           <h1>About</h1>
 
-          <div class="stat-row">
-            <div><strong id="statTried">0</strong><span>Games tried</span></div>
-            <div><strong id="statPlays">0</strong><span>Total plays</span></div>
-            <div><strong id="favoriteCount">0</strong><span>My List</span></div>
-          </div>
           <div class="pref-block">
-            <label for="openMode">open game?</label>
+            <label for="openMode">Open game?</label>
             <select id="openMode">
               <option value="page">Open in the arcade player</option>
               <option value="same">Open game in this tab</option>
               <option value="new">Open game in a new tab</option>
             </select>
           </div>
-          <h2>Spotlight</h2>
-          <div class="folder-links">
-            <a href="#home" id="aboutSpotlight"
-              ><small id="aboutSpotlightCount"></small></a
-            >
-          </div>
-          <div class="" id="aboutFolders"></div>
+          <button class="primary-button" id="editSections" type="button">Edit home sections</button>
         </div>
       </section>
     </main>
@@ -206,7 +183,6 @@
           <p id="detailsMeta" class="sub"></p>
           <div class="tag-row" id="detailsTags"></div>
           <p id="detailsOverview"></p>
-          <h2><span id="detailsVote">7.5</span></h2>
           <div class="details-actions">
             <a class="ghost" id="detailsDirect" target="_blank" rel="noopener"
               ><i data-icon="arrow-up-right"></i>Direct link</a
@@ -215,12 +191,8 @@
         </div>
       </main>
       <footer>
-        <button id="detailsFooterFav">
-        </button>
         <button class="play-cta" id="detailsPlay" data-play="">
           <i data-icon="play"></i>Play
-        </button>
-        <button id="detailsShare"
         </button>
       </footer>
     </div>
@@ -235,23 +207,15 @@
       <div id="dialogContent"></div>
     </dialog>
 
-    <!-- Spotlight editor: choose and order the games in the top carousel -->
-    <dialog
-      id="spotlightDialog"
-      class="arcade-dialog spotlight-dialog"
-      aria-labelledby="spotlightHeading"
-    >
+    <dialog id="sectionsDialog" class="arcade-dialog spotlight-dialog" aria-labelledby="sectionsHeading">
       <div class="dialog-header">
-        <h2 id="spotlightHeading">Edit the spotlight</h2>
-        <button
-          class="icon-button"
-          id="closeSpotlight"
-          aria-label="Close spotlight editor"
-        >
-          <i data-icon="x"></i>
-        </button>
+        <h2 id="sectionsHeading">Edit home page sections</h2>
+        <button class="icon-button" id="closeSections" type="button" aria-label="Close editor">×</button>
       </div>
-      <div id="spotlightContent"></div>
+      <div id="sectionsEditor" class="sections-editor"></div>
+      <div class="spot-actions">
+        <button class="primary-button" id="saveSections" type="button">Save changes</button>
+      </div>
     </dialog>
     <div class="toast" id="toast" role="status"></div>
     <script src="website/data/games.js"></script>

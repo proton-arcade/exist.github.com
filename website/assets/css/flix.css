@@ -28,7 +28,7 @@ body {
 }
 
 body.flix {
-  font-family: "Trebuchet MS", Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
   margin: 0;
   padding: 0;
@@ -457,7 +457,7 @@ body.flix .icon {
   margin-top: 56px;
   margin-bottom: 48px;
   font-size: 140%;
-  font-family: "Benton Sans", "Helvetica Neue", helvetica, arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   line-height: 160%;
   text-align: center;
   padding: 0 24px;
@@ -557,9 +557,31 @@ body.flix .icon {
 }
 
 .search-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+  align-items: start;
+}
+.search-grid .game-card {
+  min-width: 0;
+  max-width: 160px;
   display: flex;
-  flex-wrap: wrap;
-  gap: 2px;
+  flex-direction: column;
+  gap: 6px;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+.search-grid .game-card img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 5px;
+  background: #252525;
+}
+.search-grid .game-card span { font-weight: 700; }
+@media (max-width: 520px) {
+  .search-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 .empty-state {
@@ -1228,7 +1250,7 @@ body.folder-page .toast.visible {
 
 body.player-body,
 body.folder-page {
-  font-family: "Trebuchet MS", Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   background: var(--flix-bg);
   color: #fff;
   margin: 0;
@@ -1613,6 +1635,41 @@ body.folder-page {
 .hero-content button.flat-btn[hidden] {
   display: none;
 }
+
+/* Home section editor and dynamically rendered game rows. */
+.row-posters {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 0 12px 14px;
+  scrollbar-width: thin;
+}
+.row-posters .game-card {
+  flex: 0 0 160px;
+  color: inherit;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.row-posters .game-card img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 5px;
+  background: #252525;
+}
+.row-posters .game-card span { font-weight: 700; }
+.flix-row > h2 { display: flex; align-items: center; gap: 9px; font-size: 1.1rem; margin: 22px 12px 9px; }
+.collection-icon { width: 22px; height: 22px; object-fit: contain; flex: 0 0 auto; }
+[data-icon] { display: inline-flex; align-items: center; justify-content: center; }
+[data-icon] svg { display: block; width: 100%; height: 100%; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+.sections-editor { padding: 12px 18px; display: grid; gap: 12px; }
+.section-editor-field { display: grid; gap: 8px; font-weight: 700; }
+.section-editor-field select { padding: 10px; background: #171717; color: white; border: 1px solid #555; border-radius: 4px; font: inherit; }
+.section-editor-toggle { display: flex; align-items: center; gap: 10px; }
+.sections-editor h3 { margin: 8px 0 0; }
+#sectionsDialog > .spot-actions { padding: 0 18px 18px; }
 
 /* Spotlight editor dialog (choose + order the top carousel) */
 
