@@ -31,7 +31,7 @@
       });
     });
     if (!groups.size && catalog.length) groups.set('Games', catalog);
-    groups.forEach((items, label) => {
+    function appendRow(label, items) {
       const section = document.createElement('section');
       section.className = 'flix-row';
       const heading = document.createElement('h2');
@@ -41,6 +41,12 @@
       items.forEach((game) => cards.append(makeCard(game)));
       section.append(heading, cards);
       rows.append(section);
+    }
+    groups.forEach((items, label) => appendRow(label, items));
+    (window.EXST_FOLDERS || []).forEach((folder) => {
+      if (settings[`collection:${folder.id}`] === false) return;
+      const collectionGames = folder.games.map((id) => catalog.find((game) => game.id === id)).filter(Boolean);
+      if (collectionGames.length) appendRow(folder.title, collectionGames);
     });
   }
 
@@ -81,12 +87,20 @@
       checkbox.dataset.section = tag;
       label.append(checkbox, document.createTextNode(` Show ${tag} section`)); content.append(label);
     });
+    (window.EXST_FOLDERS || []).forEach((folder) => {
+      const label = document.createElement('label'); label.className = 'section-editor-toggle';
+      const checkbox = document.createElement('input'); checkbox.type = 'checkbox';
+      checkbox.checked = settings[`collection:${folder.id}`] !== false;
+      checkbox.dataset.collection = folder.id;
+      label.append(checkbox, document.createTextNode(` Show collection: ${folder.title}`)); content.append(label);
+    });
     dialog.showModal();
   });
   document.getElementById('saveSections')?.addEventListener('click', () => {
     const dialog = document.getElementById('sectionsDialog');
     const next = { spotlight: document.getElementById('spotlightChoice')?.value };
     document.querySelectorAll('#sectionsEditor [data-section]').forEach((checkbox) => { next[checkbox.dataset.section] = checkbox.checked; });
+    document.querySelectorAll('#sectionsEditor [data-collection]').forEach((checkbox) => { next[`collection:${checkbox.dataset.collection}`] = checkbox.checked; });
     settings = next;
     try { localStorage.setItem(storageKey, JSON.stringify(settings)); } catch (_) { /* session remains usable */ }
     location.reload();

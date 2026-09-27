@@ -28,7 +28,7 @@ hero=true
 # TEST GAME: remove this entry block and website/games/test-game/ to remove the demo.
 [game]
 id=arcade-test-game
-title=Arcade Test Game
+title=Games
 path=games/test-game/index.html
 icon=assets/images/default-game.svg
 version=Demo
