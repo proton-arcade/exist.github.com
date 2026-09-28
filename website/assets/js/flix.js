@@ -51,15 +51,65 @@
     groups.forEach((items, label) => appendRow(label, items));
   }
 
-  const hero = catalog.find((game) => game.hero === 'true') || catalog[0];
-  if (hero) {
-    document.getElementById('heroTitle').textContent = hero.title;
-    document.getElementById('heroOverview').textContent = hero.description || '';
-    document.getElementById('heroKicker').textContent = hero.version || 'Featured game';
-    document.getElementById('heroPlay').dataset.play = hero.id;
-    document.getElementById('heroDetails').dataset.details = hero.id;
-    document.getElementById('heroCover').style.backgroundImage = `linear-gradient(90deg,#111,transparent),url("website/${hero.icon || 'assets/images/default-game.svg'}")`;
+  // Only games explicitly marked `hero=true` belong in the banner. Filtering
+  // preserves their order in data/games.js; all other catalog entries are skipped.
+  const spotlightGames = catalog.filter((game) => game.hero === 'true');
+  const heroDots = document.getElementById('heroDots');
+  const heroCover = document.getElementById('heroCover');
+  const heroTitle = document.getElementById('heroTitle');
+  let activeSpotlight = 0;
+
+  function showSpotlight(index) {
+    if (!spotlightGames.length) return;
+    activeSpotlight = (index + spotlightGames.length) % spotlightGames.length;
+    const game = spotlightGames[activeSpotlight];
+    heroTitle.textContent = game.title;
+    document.getElementById('heroOverview').textContent = game.description || '';
+    document.getElementById('heroKicker').textContent = game.version || 'Featured game';
+    document.getElementById('heroMeta').textContent = (game.tags || '').split(',').map((tag) => tag.trim()).filter(Boolean).join(' · ');
+    document.getElementById('heroCategories').textContent = '';
+    document.getElementById('heroPlay').dataset.play = game.id;
+    document.getElementById('heroDetails').dataset.details = game.id;
+    heroCover.style.backgroundImage = `linear-gradient(90deg,#111,transparent),url("website/${game.icon || 'assets/images/default-game.svg'}")`;
+    heroDots.querySelectorAll('button').forEach((dot, dotIndex) => {
+      const selected = dotIndex === activeSpotlight;
+      dot.classList.toggle('selected', selected);
+      dot.setAttribute('aria-pressed', String(selected));
+    });
   }
+
+  spotlightGames.forEach((game, index) => {
+    const dot = document.createElement('button');
+    dot.type = 'button';
+    dot.setAttribute('aria-label', `Show ${game.title}`);
+    dot.setAttribute('aria-pressed', 'false');
+    dot.addEventListener('click', () => {
+      showSpotlight(index);
+      restartSpotlightTimer();
+    });
+    heroDots.append(dot);
+  });
+  if (spotlightGames.length < 2) heroDots.hidden = true;
+  showSpotlight(0);
+
+  const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  let spotlightTimer;
+  function restartSpotlightTimer() {
+    window.clearInterval(spotlightTimer);
+    if (reduceMotion || spotlightGames.length < 2) return;
+    spotlightTimer = window.setInterval(() => {
+      const home = document.getElementById('page-home');
+      if (document.hidden || home.hidden || heroDots.matches(':hover') || heroDots.contains(document.activeElement)) return;
+      showSpotlight(activeSpotlight + 1);
+    }, 5000);
+  }
+  heroDots.addEventListener('mouseenter', () => window.clearInterval(spotlightTimer));
+  heroDots.addEventListener('mouseleave', restartSpotlightTimer);
+  heroDots.addEventListener('focusin', () => window.clearInterval(spotlightTimer));
+  heroDots.addEventListener('focusout', restartSpotlightTimer);
+  document.addEventListener('visibilitychange', restartSpotlightTimer);
+  restartSpotlightTimer();
+
   renderSections();
   catalog.forEach((game) => grid.append(makeCard(game)));
   const count = document.getElementById('searchCount');
